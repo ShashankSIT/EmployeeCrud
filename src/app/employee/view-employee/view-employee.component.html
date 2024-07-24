@@ -1,0 +1,300 @@
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="card mb-4">
+                <div class="card-header d-flex flex-wrap justify-content-between align-items-center">
+                    <a routerLink="/dashboard/add-emp">
+                        <button class="btn btn-primary">Add Employee</button>
+                    </a>
+                    <div>
+                        <h3>Employees</h3>
+                    </div>
+
+                    <div class="d-flex flex-wrap align-items-center">
+                        <div class="input-group input-group-sm ">
+                            <input type="text" class="form-control" #searchByName
+                                (input)="searchFromAnywhere(searchByName.value)" placeholder="Search"
+                                aria-label="Search" aria-describedby="searchButton">
+                        </div>
+                        <div class="w-51">
+                            <div appearance="fill" class="input-group input-group-sm">
+                                <mat-select [formControl]="departmentList" placeholder="Departments"
+                                    class="form-control abc" style="padding-top: 12px;" multiple>
+                                    <mat-option *ngFor="let department of AllDepartments" [value]="department.deptId">
+                                        {{ department.deptName }}
+                                    </mat-option>
+                                </mat-select>
+                            </div>
+                        </div>
+                        <button class="btn searchButton btn-primary" (click)="multipleSelect()" type="button"
+                            id="searchButton">Search</button>
+
+
+
+
+                        <!-- <div class="input-group input-group-sm mb-3 ms-4">
+                            <mat-form-field>
+                                <mat-select [formControl]="departmentList" class="form-control" multiple>
+                                    <mat-option *ngFor="let department of AllDepartments" [value]="department.deptId">{{
+                                        department.deptName }}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            
+                        </div> -->
+                    </div>
+                </div>
+                <div class="card-body px-0 pt-0 pb-2 table-responsive ">
+                    <table mat-table [dataSource]="dataSource" matSort (matSortChange)="announceSortChange($event)"
+                        class="mat-elevation-z8 ">
+
+                        <ng-container matColumnDef="EmpName">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by name">
+                                Name</th>
+                            <td mat-cell *matCellDef="let element">{{ element.empName }}</td>
+                        </ng-container>
+
+                        <!-- EmailId Column -->
+                        <ng-container matColumnDef="EmpEmail">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by Email">
+                                Email</th>
+                            <td mat-cell *matCellDef="let element">{{ element.empEmail }}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="EmpGender">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                sortActionDescription="Sort by Gender">
+                                Gender</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{ element.empGender }}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="EmpDepartment">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                sortActionDescription="Sort by Department">
+                                Department</th>
+                            <td mat-cell *matCellDef="let element">
+                                {{ element.empDepartment }}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="Skills">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                sortActionDescription="Sort by Skills">
+                                Skills</th>
+                            <td mat-cell *matCellDef="let element">{{ element.skills }}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="Salary">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header
+                                sortActionDescription="Sort by Salary">
+                                Salary</th>
+                            <td mat-cell *matCellDef="let element">{{ element.salary }}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="Actions">
+                            <th mat-header-cell *matHeaderCellDef class="text-center">
+                                Action
+                            </th>
+                            <td mat-cell *matCellDef="let element">
+                                <div class="example-flex-container text-center">
+                                    <button mat-icon-button color="warn"
+                                        aria-label="Example icon button with a heart icon"
+                                        (click)="deleteButton(element.empId)">
+                                        <mat-icon>delete</mat-icon>
+                                    </button>
+                                    <button class="editButton" type="button" mat-icon-button
+                                        aria-label="Example icon button with a open in new tab icon"
+                                        data-bs-toggle="modal" data-bs-target="#staticBackdrop"
+                                        (click)="updateButton(element.empId)">
+                                        <mat-icon>edit</mat-icon>
+                                    </button>
+                                </div>
+                            </td>
+                        </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+                    </table>
+                </div>
+                <div class="card-footer">
+                    <mat-paginator class="page" [pageSizeOptions]="[2, 5, 7, 10]" showFirstLastButtons
+                        [pageSize]="pageSize2" [pageIndex]="pageIndex2" [length]="EmpDataCount"
+                        (page)="onPageChange($event)">
+                    </mat-paginator>
+                </div>
+                 <!-- <div class="card-footer ">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="row">
+                                <div class="col-md-7">
+                                    <p *ngIf="selectedPageSize < EmpDataCount">Showing {{selectedPageSize}} Of
+                                        {{EmpDataCount}} Records</p>
+                                    <p *ngIf="selectedPageSize > EmpDataCount">Showing {{EmpDataCount}} Of
+                                        {{EmpDataCount}} Records</p>
+                                </div>
+                                <div class="col-md-3">
+                                    <select class="form-select" (change)="SelectRows()" [(ngModel)]="selectedPageSize"
+                                        aria-label="Number of Records">
+                                        <option value="2" selected>2</option>
+                                        <option value="5">5</option>
+                                        <option value="7">7</option>
+                                        <option value="10">10</option>
+                                    </select>
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <nav class="col-md-9" aria-label="...">
+                            <ul class="pagination justify-content-end">
+                                <li class="page-item">
+                                    <a class="page-link active" (click)="previousPage()" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </a>
+                                </li>
+                                <li class="page-item"><a class="page-link active" (click)="getPageValue($event)">1</a>
+                                </li>
+                                <li class="page-item"><a class="page-link" (click)="getPageValue($event)">2</a></li>
+                                <li class="page-item"><a class="page-link" (click)="getPageValue($event)">3</a></li>
+                                <li class="page-item">
+                                    <a class="page-link active" (click)="nextPage()" aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal For Edit -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Add User</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form #empDetails="ngForm" (submit)="UpdateUser(empDetails)" class="needs-validation" novalidate>
+                <div class="modal-body">
+                    <p class="text-uppercase text-sm">Employee Information</p>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="name" class="form-control-label">Name</label>
+                                <input required type="text" class="form-control" placeholder="Enter Name" name="EmpName"
+                                    id="name" [(ngModel)]="Employee.Name" />
+                                <input name="EmpId" [(ngModel)]="Employee.id" type="number" class="d-none" />
+                                <div class="invalid-feedback">Please provide a name.</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="email" class="form-control-label">Email address</label>
+                                <input class="form-control" placeholder="Enter Email" type="email" id="email"
+                                    name="EmpEmail" required [(ngModel)]="Employee.Email" />
+                                <div class="invalid-feedback">
+                                    Please provide a valid email address.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-control-label">Gender</label>
+                            <div class="form-group d-flex">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="empGender" id="male" required
+                                        [(ngModel)]="Employee.Gender" value="Male" />
+                                    <label class="form-check-label me-4" for="male">Male</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="empGender" id="female" required
+                                        [(ngModel)]="Employee.Gender" value="Female" />
+                                    <label class="form-check-label me-4" for="female">Female</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="empGender" id="other" required
+                                        [(ngModel)]="Employee.Gender" value="Other" />
+                                    <label class="form-check-label" for="other">Other</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Other form fields -->
+
+                        <div class="row mt-4">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="departments" class="form-control-label">Department</label>
+                                    <select class="form-control" id="departments" name="empDepartment" required
+                                    [(ngModel)]="Employee.Department">
+                                    <option value="">Select department</option>
+                                    <option *ngFor="let department of AllDepartments" [value]="department.deptId">
+                                        {{department.deptName}}
+                                    </option>
+                                    <!-- <option *ngFor="let department of AllDepartments" [value]="department.deptId">
+                                        {{ department.deptName }}
+                                    </option> -->
+                                </select>
+                                
+                                    <div class="invalid-feedback">
+                                        Please select a department.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="salary" class="form-control-label">Salary</label>
+                                    <input class="form-control" type="number" id="salary" name="salary" required
+                                        [(ngModel)]="Employee.Salary" />
+                                    <div class="invalid-feedback">
+                                        Please provide a valid salary.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="horizontal dark" />
+                        <p class="text-uppercase text-sm mt-4">Skills</p>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group d-flex">
+                                    <input type="text" [(ngModel)]="Employee.Skills" name="Skills" class="d-none" />
+                                    <div class="form-check me-5">
+                                        <input class="form-check-input" type="checkbox" name="Coding" value="Coding"
+                                            id="coding" required [(ngModel)]="Employee.Coding"
+                                            [checked]="Employee.Coding" />
+                                        <label class="form-check-label" for="coding">Coding</label>
+                                    </div>
+                                    <div class="form-check me-5">
+                                        <input class="form-check-input" type="checkbox" name="Communication"
+                                            value="Communication" id="communication" required
+                                            [(ngModel)]="Employee.Communication" [checked]="Employee.Communication" />
+                                        <label class="form-check-label" for="communication">Communication</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 mt-5">
+                                <div class="form-group d-flex justify-content-center">
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                            Close
+                                        </button>
+                                        <button type="submit" data-bs-dismiss="modal" class="btn btn-primary">
+                                            Update
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

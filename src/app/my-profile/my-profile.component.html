@@ -1,0 +1,266 @@
+<div class="card shadow-lg mx-4 card-profile-bottom profileRight">
+    <div class="card-body p-3">
+        <div class="row gx-4">
+            <div class="col-auto">
+                <div class="avatar avatar-xl position-relative">
+                    <img *ngIf="ProfileToggle !=  1" src="../assets/img/{{ProfilePic}}" alt="profile_image"
+                        class="w-100 border-radius-lg shadow-sm">
+                    <img *ngIf="ProfileToggle ==  1" src="http://localhost:5219/ProfilePics/{{ProfilePic}}"
+                        alt="profile_image" class="w-100 border-radius-lg shadow-sm">
+                </div>
+            </div>
+            <div class="col-auto my-auto">
+                <div class="h-100">
+                    <h5 class="mb-1">
+                        {{UserName}}
+                    </h5>
+                    <p class="mb-0 font-weight-bold text-sm">
+                        {{UserRole}}
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 my-sm-auto ms-sm-auto me-sm-0 mx-auto mt-3">
+                <div class="nav-wrapper position-relative end-0">
+                    <ul class="nav nav-pills nav-fill p-1" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <a class="nav-link mb-0 px-0 py-1 active d-flex align-items-center justify-content-center "
+                                data-bs-toggle="tab" href="javascript:;" (click)="toggle(1)" role="tab"
+                                aria-selected="true">
+                                <i class="fa fa-eye"></i>
+                                <span class="ms-2">View</span>
+                            </a>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <a class="nav-link mb-0 px-0 py-1 d-flex align-items-center justify-content-center "
+                                data-bs-toggle="tab" href="javascript:;" role="tab" (click)="toggle(2)"
+                                aria-selected="false" tabindex="-1">
+                                <i class="fa fa-edit"></i>
+                                <span class="ms-2">Edit</span>
+                            </a>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <a class="nav-link mb-0 px-0 py-1 d-flex align-items-center justify-content-center "
+                                data-bs-toggle="tab" href="javascript:;" role="tab" (click)="toggle(3)"
+                                aria-selected="false" tabindex="-1">
+                                <i class="fa fa-edit"></i>
+                                <span class="ms-2">Demo</span>
+                            </a>
+                        </li>
+                        <div aria-selected="false" tabindex="-1" role="tab"
+                            class="moving-tab position-absolute nav-link" [ngClass]="{
+                                'Toggle1': ProfileToggle === 1,
+                                'Toggle2': ProfileToggle === 2,
+                                'Toggle3': ProfileToggle === 3
+                             }">
+                            <a class="nav-link mb-0 px-0 py-1 active d-flex align-items-center justify-content-center"
+                                href="javascript:;" role="tab" aria-selected="true">-</a>
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid py-4">
+    <div class="row profileContainer">
+        <div class="col-md-8">
+            <div class="card">
+                <form [formGroup]="reactiveFormGroup">
+                    <div class="card-header pb-0">
+                        <div class="d-flex align-items-center">
+                            <p class="mb-0">Edit Profile</p>
+                            <button type="submit" (click)="SaveDetials()" [disabled]="inputDisable"
+                                class="btn btn-primary btn-md ms-auto">Save
+                                Details</button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <p class="text-uppercase text-lg">User Information</p>
+                        <p class="d-none" #DemoTag></p>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="example-text-input" class="form-control-label">Name</label>
+                                    <input class="form-control" type="text" formControlName="name">
+                                    <input class="d-none" type="text" formControlName="id">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="example-text-input" class="form-control-label">Email </label>
+                                    <input class="form-control" type="email" formControlName="emailId">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="example-text-input" class="form-control-label">mobile</label>
+                                    <input class="form-control" type="text" formControlName="mobile">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="example-text-input" class="form-control-label">Role</label>
+                                    <input class="form-control" type="text" formControlName="roles">
+                                </div>
+                            </div>
+                        </div>
+                        <hr class="horizontal dark">
+                        <div class="d-flex">
+                            <p class="text-uppercase text-lg">Contact Information</p>
+                            <button type="submit" (click)="addRow()" [disabled]="inputDisable"
+                                class="btn btn-danger btn-md ms-auto">Add Another
+                                Address</button>
+                        </div>
+
+                        <!-- <div class="col-lg-4 col-md-4 col-xs-12 col-sm-6 form-group">
+                            @Html.LabelFor(m => m.Firstname)
+                            @Html.TextBoxFor(m => m.Firstname, new { @class = "form-control", @tabIndex = 7 @name='model.FirstName' })
+                            @Html.ValidationMessageFor(m => m.Firstname, "", new { @class = "text-danger" })
+                        </div> -->
+
+
+
+
+                        <div formArrayName="address">
+                            <div class="row" *ngFor="let address of getAddressesControls(); let i=index"
+                                [formGroupName]="i" [ngClass]="{ 'hidden': getAddressValue(i, 'isDeleted') }">
+                                <div class="d-flex justify-content-end">
+                                    <button *ngIf="i > 0" [disabled]="inputDisable"
+                                        class="btn btn-link text-danger p-0 closeButton fixed-plugin-close-button d-flex justify-content-end "
+                                        (click)="removeAddress(i)">
+                                        <i class="fa fa-close"></i>
+                                    </button>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="example-text-input" class="form-control-label">Address</label>
+                                        <input class="form-control" type="text" formControlName="address">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="example-text-input" class="form-control-label">State</label>
+                                        <select class="form-control" formControlName="state">
+                                            <option value="">Select State</option>
+                                            <option *ngFor="let state of StateList" [value]="state.stateId">{{
+                                                state.stateName }}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="example-text-input" class="form-control-label">City</label>
+                                        <select class="form-control" formControlName="city">
+                                            <option value="">Select City</option>
+                                            <ng-container *ngFor="let city of CityList">
+                                                <option *ngIf="city.stateId == filterCities(i)" [value]="city.cityId">
+                                                    {{city.cityName }}</option>
+                                            </ng-container>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="example-text-input" class="form-control-label">Postal code</label>
+                                        <input class="form-control" type="text" formControlName="postal">
+                                        <input class="d-none" type="text" formControlName="isDeleted">
+                                        <input class="d-none" type="text" formControlName="id">
+                                    </div>
+                                </div>
+                                <hr class="horizontal dark">
+                                <hr class="horizontal2">
+                                <hr class="horizontal dark">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+        <div class="col-md-4 ">
+            <div class="card card-profile profileRight2">
+                <img src="../assets/img/bg-profile.jpg" alt="Image placeholder" class="card-img-top">
+                <div class="row justify-content-center">
+                    <div class="col-4 col-lg-4 order-lg-2">
+                        <div class="mt-n4 mt-lg-n6 mb-4 mb-lg-0">
+                            <a class="edit-button" (click)="selectImage()">
+                                <img *ngIf="ImageChanged" [src]="selectedImageSrc" alt="profile_image"
+                                    class="w-100 border-radius-lg profileRadius shadow-sm">
+                                <img *ngIf="!ImageChanged" src="http://localhost:5219/ProfilePics/{{ProfilePic}}"
+                                    alt="profile_image" class="w-100 border-radius-lg profileRadius shadow-sm">
+                                <i class="fas fa-pencil-alt" [ngClass]="{ 'hidden': !editImage }"></i>
+                            </a>
+                        </div>
+                        <input type="file" hidden #imageInput (change)="onImageSelected($event)" accept="image/*">
+                    </div>
+                </div>
+
+                <div class="card-header text-center border-0 pt-0 pt-lg-2 pb-4 pb-lg-3">
+                    <div class="d-flex justify-content-between">
+                        <a href="javascript:;" class="btn btn-sm btn-info mb-0 d-none d-lg-block">Connect</a>
+                        <a href="javascript:;" class="btn btn-sm btn-info mb-0 d-block d-lg-none"><i
+                                class="ni ni-collection"></i></a>
+                        <a href="javascript:;"
+                            class="btn btn-sm btn-dark float-right mb-0 d-none d-lg-block">Message</a>
+                        <a href="javascript:;" class="btn btn-sm btn-dark float-right mb-0 d-block d-lg-none"><i
+                                class="ni ni-email-83"></i></a>
+                    </div>
+                </div>
+                <div class="card-body pt-0">
+                    <div class="text-center mt-4">
+                        <h5>
+                            {{UserName}}<span class="font-weight-light">, {{UserRole}}</span>
+                        </h5>
+                        <div class="h6 font-weight-300">
+                            <i class="ni location_pin mr-2"></i>{{UserData?.mobile}}
+                        </div>
+                        <div class="h6 mt-4">
+                            <i class="ni business_briefcase-24 mr-2"></i>{{CityName2}}
+                            <!-- <i class="ni business_briefcase-24 mr-2"></i>Solution Manager - Creative Tim Officer -->
+                        </div>
+                        <div>
+                            <i class="ni education_hat mr-2"></i>University of Computer Science
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer class="footer pt-3  ">
+        <div class="container-fluid">
+            <div class="row align-items-center justify-content-lg-between">
+                <div class="col-lg-6 mb-lg-0 mb-4">
+                    <div class="copyright text-center text-sm text-muted text-lg-start">
+                        ©
+                        <script>
+                            document.write(new Date().getFullYear())
+                        </script>2023,
+                        made with <i class="fa fa-heart" aria-hidden="true"></i> by
+                        <a href="https://www.creative-tim.com" class="font-weight-bold" target="_blank">Creative Tim</a>
+                        for a better web.
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <ul class="nav nav-footer justify-content-center justify-content-lg-end">
+                        <li class="nav-item">
+                            <a href="https://www.creative-tim.com" class="nav-link text-muted" target="_blank">Creative
+                                Tim</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="https://www.creative-tim.com/presentation" class="nav-link text-muted"
+                                target="_blank">About Us</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="https://www.creative-tim.com/blog" class="nav-link text-muted"
+                                target="_blank">Blog</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="https://www.creative-tim.com/license" class="nav-link pe-0 text-muted"
+                                target="_blank">License</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>

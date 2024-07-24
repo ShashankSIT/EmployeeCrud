@@ -1,0 +1,99 @@
+.wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-body {
+    background: url("https://unsplash.com/photos/rNYCrcjUnOA") !important;
+}
+
+.input-group {
+    width: 300px;
+}
+
+.form-control {
+    border-radius: 0px;
+    height: 50px;
+    font-size: 16px;
+}
+
+abc {
+    padding-top: 3px !important;
+}
+
+.searchButton {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    padding-top: 15px;
+    padding-bottom: 15px
+}
+
+button#searchButton {
+    margin-bottom: 0;
+}
+
+table {
+    counter-reset: section;
+}
+
+.counterr:before {
+    counter-increment: section;
+    content: counter(section);
+}
+
+.custom-mat-select {
+    width: 100%;
+    margin-right: 10px;
+}
+
+/* Optional: Add Bootstrap input styles to the mat-select */
+.custom-mat-select .mat-select-trigger {
+    border: 1px solid #000000;
+    border-radius: 0.25rem;
+    padding: 0.175rem 0.75rem;
+    line-height: 1.5;
+    background-color: #fff !important;
+}
+
+.custom-mat-select .mat-select-arrow {
+    top: 38%;
+    right: 8px;
+}
+
+.custom-mat-select .mat-select-placeholder {
+    color: #6c757d;
+    font-size: 0.875rem;
+}
+
+.text-right {
+    text-align: right;
+    padding-right: 40px;
+  }
+
+.inputField {
+    width: 73%;
+    padding: 14px !important;
+    border: none;
+    /* border-bottom: 2px solid #422b95; */
+    outline: none;
+    padding: 5px;
+    border-radius: 2px;
+    font-size: 1.07rem;
+    font-weight: 400;
+    box-shadow: 0px 1px 3px 1px #5e72e4;
+    transition: border-bottom-color 0.9s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.inputField:focus {
+    border: none;
+    border-bottom-color: #5e72e4;
+    box-shadow: 0px 3px 9px 0px #5e72e4;
+}
+
+@media (max-width: 576px) {
+    .input-group {
+        max-width: 100%;
+        width: 100%;
+    }
+}

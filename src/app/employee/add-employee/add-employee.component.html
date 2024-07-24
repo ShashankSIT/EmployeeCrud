@@ -1,0 +1,194 @@
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header pb-0">
+                    <h2 align="center" class="mb-0">Add Employee</h2>
+                </div>
+                <div class="card-body">
+                    <form #empDetails="ngForm" class="needs-validation" (submit)="AddEmployee(empDetails)" novalidate>
+                        <p class="text-uppercase text-sm">Employee Information</p>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="name" class="form-control-label">Name</label>
+                                    <input required type="text" class="form-control" placeholder="Enter Name"
+                                        name="EmpName" id="name" ngModel />
+                                    <div class="invalid-feedback">Please provide a name.</div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="email" class="form-control-label">Email address</label>
+                                    <input class="form-control" placeholder="Enter Email" type="email" id="email"
+                                        name="EmpEmail" required ngModel />
+                                    <div class="invalid-feedback">
+                                        Please provide a valid email address.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-control-label">Gender</label>
+                                <div class="form-group d-flex">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="empGender" id="male" required
+                                            ngModel value="Male" />
+                                        <label class="form-check-label me-4" for="male">Male</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="empGender" id="female"
+                                            required ngModel value="Female" />
+                                        <label class="form-check-label me-4" for="female">Female</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="empGender" id="other"
+                                            required ngModel value="Other" />
+                                        <label class="form-check-label" for="other">Other</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Other form fields -->
+
+                            <div class="row mt-4">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="departments" class="form-control-label">Department</label>
+                                        <select class="form-control" id="departments" name="empDepartment" required
+                                            ngModel>
+                                            <option value="">Select department</option>
+                                            <option *ngFor="let department of AllDepartments"
+                                                [value]="department.deptId">{{ department.deptName }}</option>
+                                        </select>
+                                        <div class="invalid-feedback">
+                                            Please select a department.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="salary" class="form-control-label">Salary</label>
+                                        <input class="form-control" type="number" id="salary" name="salary" required
+                                            ngModel />
+                                        <div class="invalid-feedback">
+                                            Please provide a valid salary.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr class="horizontal dark" />
+                            <p class="text-uppercase text-sm mt-4">Skills</p>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group d-flex">
+                                        <div class="form-check me-5">
+                                            <input class="form-check-input" type="checkbox" name="skills" value="Coding"
+                                                id="coding" required [(ngModel)]="Coding" />
+                                            <label class="form-check-label" for="coding">Coding</label>
+                                            <!-- <div class="invalid-feedback">
+                                                Please select at least one skill.
+                                            </div> -->
+                                        </div>
+                                        <div class="form-check me-5">
+                                            <input class="form-check-input" type="checkbox" name="skills"
+                                                value="Communication" id="communication" required
+                                                [(ngModel)]="Communication" />
+                                            <label class="form-check-label" for="communication">Communication</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 mt-5">
+                                    <div class="form-group d-flex justify-content-center">
+                                        <button type="submit" class="btn btn-dark float-right mb-0 d-none d-lg-block">
+                                            Add Employee
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4" *ngIf="UserRole === 'Admin'">
+            <div class="card card-profile">
+                <img src="../assets/img/carousel-3.jpg" alt="Image placeholder" class="card-img-top" />
+                <div class="row justify-content-center">
+                    <div class="col-4 col-lg-4 order-lg-2">
+                        <div class="mt-n4 mt-lg-n6 mb-4 mb-lg-0">
+                            <a href="javascript:;">
+                                <img src="../assets/img/team-4.jpg"
+                                    class="rounded-circle img-fluid border border-2 border-white" />
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-header text-center border-0 pt-0 pt-lg-2 pb-4 pb-lg-3">
+                    <div class="d-flex justify-content-between">
+                        <a href="javascript:;" class="btn btn-info mb-0 d-none d-lg-block">Connect</a>
+                        <a href="javascript:;" class="btn btn-info mb-0 d-block d-lg-none"><i
+                                class="ni ni-collection"></i></a>
+                        <a href="javascript:;" class="btn btn-dark float-right mb-0 d-none d-lg-block">Message</a>
+                        <a href="javascript:;" class="btn btn-dark float-right mb-0 d-block d-lg-none"><i
+                                class="ni ni-email-83"></i></a>
+                    </div>
+                </div>
+                <div class="card-body pt-0">
+                    <div class="text-center mt-4">
+                        <h5>{{ UserName }}<span class="font-weight-light"></span></h5>
+                        <div class="h6 font-weight-300">
+                            <i class="ni location_pin mr-2"></i>{{ UserEmail }}
+                        </div>
+                        <div class="h6 mt-4">
+                            <i class="ni business_briefcase-24 mr-2"></i>{{ UserRole }}
+                        </div>
+                        <!-- <div>
+              <i class="ni education_hat mr-2"></i>University of Computer
+              Science
+            </div> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer class="footer pt-3">
+        <div class="container-fluid">
+            <div class="row align-items-center justify-content-lg-between">
+                <div class="col-lg-6 mb-lg-0 mb-4">
+                    <div class="copyright text-center text-sm text-muted text-lg-start">
+                        ©
+                        <script>
+                            document.write(new Date().getFullYear());
+                        </script>
+                        2023, made with <i class="fa fa-heart" aria-hidden="true"></i> by
+                        <a href="https://www.creative-tim.com" class="font-weight-bold" target="_blank">Creative Tim</a>
+                        for a better web.
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <ul class="nav nav-footer justify-content-center justify-content-lg-end">
+                        <li class="nav-item">
+                            <a href="https://www.creative-tim.com" class="nav-link text-muted" target="_blank">Creative
+                                Tim</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="https://www.creative-tim.com/presentation" class="nav-link text-muted"
+                                target="_blank">About Us</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="https://www.creative-tim.com/blog" class="nav-link text-muted"
+                                target="_blank">Blog</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="https://www.creative-tim.com/license" class="nav-link pe-0 text-muted"
+                                target="_blank">License</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>
